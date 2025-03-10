@@ -1,0 +1,11 @@
+// Генерация случайного 4-значного кода от 0000 до 9999
+function generateFourDigitCode() {
+    let code = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    
+    // Передаем сгенерированный код в Bubble функцию
+    bubble_fn_emailcode(code);
+  }
+  
+  // Запуск функции генерации кода
+  generateFourDigitCode();
+  

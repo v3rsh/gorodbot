@@ -1,0 +1,116 @@
+<!-- HTML Element for Wheel of Fortune -->
+<div id="wheel-container" style="text-align: center; margin-top: 20px; position: relative; width: 350px; height: 350px;">
+    <canvas id="wheel-canvas" width="340" height="340" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></canvas>
+    <div id="wheel-pointer" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-style: solid; border-width: 0 10px 20px 10px; border-color: transparent transparent #F36D14 transparent;"></div>
+  </div>
+  
+  <!-- JavaScript Code to Add to HTML Element -->
+  <script>
+    // Получение данных из Bubble (пример с динамическими данными)
+    const bonusData = [
+     { name: "Малые призы", bonus_id: "1730370476801x772119929837822700", index_area: 0},{ name: "Малые призы", bonus_id: "1730370493423x466588820946182600", index_area: 1},{ name: "Средние подарки", bonus_id: "1730370499641x260843000767883460", index_area: 2},{ name: "Сертификат", bonus_id: "1730370505441x455639200206659600", index_area: 3},{ name: "Средние подарки", bonus_id: "1730370511869x324080948111976400", index_area: 4},{ name: "Главный приз", bonus_id: "1730370517627x419215439040417900", index_area: 5},{ name: "Призы от Haier", bonus_id: "1730370528103x762249708635128700", index_area: 6},{ name: "Призы от Haier", bonus_id: "1730986302461x175806446623573380", index_area: 7},{ name: "Призы от Haier", bonus_id: "1730989354010x457779473513295900", index_area: 8},{ name: "Призы от Haier", bonus_id: "1730989584793x375731949285520450", index_area: 9},{ name: "Главный приз", bonus_id: "1730989911187x373743363235876700", index_area: 10}
+    ];
+  
+    const canvas = document.getElementById('wheel-canvas');
+    const ctx = canvas.getContext('2d');
+    const spinButton = document.getElementById('spin-button');
+  
+    let currentAngle = 0;
+    const totalSlices = bonusData.length;
+    const sliceAngle = (2 * Math.PI) / totalSlices;
+    let sectors = []; // Массив для хранения параметров каждого сектора
+  
+    // Функция для рисования колеса
+    function drawWheel() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Очистка перед рисованием нового колеса
+      sectors = []; // Очищаем массив перед новой отрисовкой
+  
+      // Рисуем контур колеса
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, 160, 0, 2 * Math.PI);
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = '#A492FE';
+      ctx.stroke();
+  
+      let startAngle = currentAngle;
+      for (let i = 0; i < totalSlices; i++) {
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height / 2);
+        ctx.arc(canvas.width / 2, canvas.height / 2, 160, startAngle, startAngle + sliceAngle);
+        
+        ctx.fillStyle = i % 2 === 0 ? '#14EAC8' : '#A492FE';
+        ctx.fill();
+        ctx.save();
+  
+        // Сохранение параметров сектора
+        sectors.push({
+          startAngle: startAngle,
+          endAngle: startAngle + sliceAngle,
+          index: i
+        });
+  
+        // Добавление текста на сектор
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(bonusData[i].index_area, 120, 0); // Убираем вертикальные отступы и выравниваем текст по центру
+        ctx.restore();
+  
+        startAngle += sliceAngle;
+      }
+  
+      // Рисуем центральный круг
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = '#F36D14';
+      ctx.fill();
+    }
+  
+    // Анимация вращения колеса
+    function spinWheel(targetIndex) {
+    const minRotation = 2 * Math.PI * 10; // 10 полных оборотов в радианах
+    const targetSector = sectors[targetIndex];
+    const randomOffset = Math.random() * (targetSector.endAngle - targetSector.startAngle);
+    const targetAngle = (Math.PI * 1.5) - (targetSector.startAngle + randomOffset);
+    const finalAngle = minRotation + targetAngle;
+  
+    const animation = canvas.animate(
+      [
+        { transform: `translate(-50%, -50%) rotate(${currentAngle}rad)` },
+        { transform: `translate(-50%, -50%) rotate(${finalAngle}rad)` }
+      ],
+      {
+        duration: 6000,
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+        fill: 'forwards'
+      }
+    );
+  
+    animation.onfinish = function() {
+      currentAngle = finalAngle % (2 * Math.PI);
+      const selectedIndex = targetIndex;
+  
+      // Используем новую переменную для хранения bonus_id
+      const selectedBonusId = bonusData[selectedIndex].bonus_id;
+  
+      alert(`Выпал: ${bonusData[selectedIndex].name}`);
+  
+      // Вызываем функцию bubble_fn_prize с результатом без дополнительных проверок
+      bubble_fn_prize(selectedBonusId);
+  
+    };
+  }
+  
+  
+    // Функция для запуска колеса из Bubble
+    window.spinWheel = spinWheel;
+  
+    // Перерисовка колеса при загрузке страницы
+    window.onload = function() {
+      drawWheel();
+  
+    };
+  </script>
+  
