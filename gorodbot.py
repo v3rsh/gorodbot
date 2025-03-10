@@ -10,7 +10,7 @@ import asyncio
 
 load_dotenv()
 
-API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
+API_TOKEN = os.getenv('BOT_TOKEN')
 GAME_URL = os.getenv('GAME_URL')
 support_email = os.getenv('SUPPORT_EMAIL')
 
