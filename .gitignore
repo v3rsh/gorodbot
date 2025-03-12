@@ -1,4 +1,7 @@
 .env
 venv/
-BUBBLE_SCRIPTS/
+BUBBLE_SCRIPTS/*
 .DS_Store
+*.csv
+*.json
+bulk.py
