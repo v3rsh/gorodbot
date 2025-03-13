@@ -5,3 +5,4 @@ BUBBLE_SCRIPTS/*
 *.csv
 *.json
 bulk.py
+distrib.log
