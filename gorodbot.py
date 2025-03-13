@@ -26,8 +26,7 @@ router = Router()
 dp.include_router(router)
 
 keyboard = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="Вход в мини-приложение", url=GAME_URL)],
-    [InlineKeyboardButton(text="Вход с параметром", url="https://gorod-lefortovo.bubbleapps.io?param=10")]
+    [InlineKeyboardButton(text="Вход в мини-приложение", url=GAME_URL)]
 ])
 # Command handler for /start
 @router.message(Command(commands=['start']))
