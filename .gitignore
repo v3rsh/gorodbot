@@ -6,3 +6,5 @@ BUBBLE_SCRIPTS/*
 *.json
 bulk.py
 distrib.log
+letter.html
+distrib.py
