@@ -24,7 +24,7 @@ cursor = conn.cursor()
 with open('export.csv', newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        email = row['email_ьфшт'].strip()
+        email = row['email_main'].strip()
         phone = row['phone'].strip()
         user_id = row['user_id'].strip()
         username = row['username'].strip()
